@@ -7,8 +7,7 @@ public class PlayerController : MonoBehaviour {
 	private float movementSpeedFactor = 40f;
 	private float maxSpeed = 12f;
 	private float switchDirectionSpeedBoostFactor = 1.5f;
-	
-	// Update is called once per frame
+
 	void FixedUpdate () {
 		float move = Input.GetAxisRaw("Horizontal");
 		Rigidbody2D rb = GetComponent<Rigidbody2D>();
@@ -29,7 +28,5 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	public void resetPlayer(){
-		Debug.Log("Reset the player here.");
-	}
+	
 }
