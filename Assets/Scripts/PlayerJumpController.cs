@@ -14,7 +14,6 @@ public class PlayerJumpController : MonoBehaviour {
 	private int jumpsLeft = 2;
 	private float jumpTimer = 0f;
 
-	private Animator anim;
 
 	// TODO FIXME move this logic to a separate static class
 	public int wallCollisionDir = 0;
@@ -23,8 +22,10 @@ public class PlayerJumpController : MonoBehaviour {
 	private const int BLOCK_LAYER = 1 << 8;
 
 
+	private PlayerAnimationController animCtrl;
+
 	void Start(){
-		anim = GetComponent<Animator>();
+		animCtrl = GetComponent<PlayerAnimationController>();
 	}
 
 	/**
@@ -36,13 +37,9 @@ public class PlayerJumpController : MonoBehaviour {
 		this.updateCollisionState();
 
 		if(!isGrounded && wallCollisionDir != 0) {
-			anim.SetBool("IsOnWall", true);			
-		} else if(!isGrounded && wallCollisionDir == 0){
-			anim.SetBool("IsOnWall", false);
-		} else if(isGrounded){
-			anim.SetBool("IsOnWall", false);
-			anim.SetBool("IsJumping", false);
-			anim.SetBool("IsDoubleJumping", false);
+			animCtrl.setState(Constants.STATE_ON_WALL);
+		} else if(isGrounded && wallCollisionDir != 0) {
+			animCtrl.setState(Constants.STATE_IDLE);
 		}
 
 		// if the user has pressed down the Jump button this frame
@@ -51,18 +48,20 @@ public class PlayerJumpController : MonoBehaviour {
 				if(wallCollisionDir == 1){
 					rb.velocity = new Vector2(-JUMP_SPEED * 2f,JUMP_SPEED);
 					jumpsLeft = 1;
+					animCtrl.setState(Constants.STATE_JUMP);
 				} else if (wallCollisionDir == -1){
 					rb.velocity = new Vector2(JUMP_SPEED * 2f,JUMP_SPEED);
 					jumpsLeft = 1;
+					animCtrl.setState(Constants.STATE_JUMP);
 				}
 			} else if(jumpsLeft > 0) {
 				if(jumpsLeft == 2 && isGrounded){
-					anim.SetBool("IsJumping", true);
+					animCtrl.setState(Constants.STATE_JUMP);
 					jumpsLeft--;
 					rb.velocity = new Vector2(rb.velocity.x,JUMP_SPEED);
 				} else if (jumpsLeft == 1 && !isGrounded
 				&& Mathf.Abs(rb.velocity.y) < Mathf.Abs(MAX_FALL_SPEED_FOR_DOUBLE_JUMP)){
-					anim.SetBool("IsDoubleJumping", true);
+					animCtrl.setState(Constants.STATE_DOUBLE_JUMP);
 					rb.velocity = new Vector2(rb.velocity.x,DOUBLE_JUMP_SPEED);
 					jumpsLeft--;
 				}
@@ -79,8 +78,7 @@ public class PlayerJumpController : MonoBehaviour {
 		// http://answers.unity3d.com/comments/474489/view.html
 		// if the collision contact point is on the bottom of my player..
 		if(Vector2.Dot(hit,Vector2.up) > 0){
-			anim.SetBool("IsDoubleJumping", false);
-			anim.SetBool("IsJumping", false);
+			animCtrl.setState(Constants.STATE_IDLE);
 			jumpsLeft = 2;
 		}
 
@@ -89,14 +87,14 @@ public class PlayerJumpController : MonoBehaviour {
 
 	void OnCollisionExit2D(Collision2D c){
 		// if you leave a collision without jumping, and you're falling...
-		if(jumpsLeft == 2 && GetComponent<Rigidbody2D>().velocity.y != 0f) {
+		if(jumpsLeft == 2 && GetComponent<Rigidbody2D>().velocity.y != 0f){
 			jumpsLeft = 0;
-			anim.SetBool("IsJumping", true);
+			animCtrl.setState(Constants.STATE_JUMP);
 		}
 	}
 
 	// TODO FIXME move this logic to a separate static class
-	void updateCollisionState(){
+	private void updateCollisionState(){
 		Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
 		// check for ground

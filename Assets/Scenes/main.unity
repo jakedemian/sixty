@@ -1385,7 +1385,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1096381140}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 7e82e5f5d4008d54e9a005547518d868, type: 3}
@@ -3083,6 +3083,7 @@ GameObject:
   - component: {fileID: 1948735705}
   - component: {fileID: 1948735706}
   - component: {fileID: 1948735707}
+  - component: {fileID: 1948735708}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3241,6 +3242,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &1948735708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1948735699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da76715d309acac449b17b1cbc502193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1955244205
 Prefab:
   m_ObjectHideFlags: 0

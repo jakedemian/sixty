@@ -7,11 +7,10 @@ public class PlayerController : MonoBehaviour {
 	private float movementSpeedFactor = 40f;
 	private float maxSpeed = 12f;
 	private float switchDirectionSpeedBoostFactor = 1.5f;
-
-	private Animator anim;
+	private PlayerAnimationController animCtrl;
 
 	void Start(){
-		anim = GetComponent<Animator>();
+		animCtrl = GetComponent<PlayerAnimationController>();
 	}
 
 	void FixedUpdate () {
@@ -20,8 +19,7 @@ public class PlayerController : MonoBehaviour {
 
 		bool isGrounded = GetComponent<PlayerJumpController>().isGrounded;
 		if(move != 0f && isGrounded){
-			Debug.Log("here?");
-			anim.SetBool("IsRunning", true);
+			animCtrl.setState(Constants.STATE_RUN);
 
 			// accelerate
 			rb.AddForce(new Vector2(move * movementSpeedFactor
@@ -30,7 +28,7 @@ public class PlayerController : MonoBehaviour {
 			// TODO make hardcoded float a constant for in air direction change
 			rb.AddForce(new Vector2(move * movementSpeedFactor * 0.5f, 0f)); 
 		} else if(move == 0f && isGrounded){
-			anim.SetBool("IsRunning", false);
+			animCtrl.setState(Constants.STATE_IDLE);
 
 			// decelerate
 			if(rb.velocity.x > 0f){
