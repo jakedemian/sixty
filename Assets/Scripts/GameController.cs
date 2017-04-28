@@ -46,8 +46,9 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void resetPlayer(){
-		player.transform.position = playerStartPosition;
-		player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-		timer = TIMER_AMOUNT_IN_SECONDS;
+		//player.transform.position = playerStartPosition;
+		//player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+		//timer = TIMER_AMOUNT_IN_SECONDS;
+		Application.LoadLevel("game_over");
 	}
 }
