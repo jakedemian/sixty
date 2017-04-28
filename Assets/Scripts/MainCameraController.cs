@@ -5,6 +5,7 @@ using UnityEngine;
 public class MainCameraController : MonoBehaviour {
 
 	public GameObject target;
+	public Light mainLight;
 
 	void Start () {
 		transform.position = new Vector3(
@@ -12,6 +13,8 @@ public class MainCameraController : MonoBehaviour {
 			target.transform.position.y,
 			transform.position.z
 		);
+
+		mainLight.transform.position = transform.position;
 	}
 	
 	void Update () {
@@ -25,5 +28,7 @@ public class MainCameraController : MonoBehaviour {
 			newY,
 			transform.position.z
 		);
+
+		mainLight.transform.position = transform.position;
 	}
 }

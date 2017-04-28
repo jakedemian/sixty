@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
-	private const float TIMER_AMOUNT_IN_SECONDS = 10f;
+	private const float TIMER_AMOUNT_IN_SECONDS = 60f;
 	private float timer = TIMER_AMOUNT_IN_SECONDS;
 	private Vector2 playerStartPosition;
 
