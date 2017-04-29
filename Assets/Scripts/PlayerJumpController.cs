@@ -21,7 +21,6 @@ public class PlayerJumpController : MonoBehaviour {
 
 	private const int BLOCK_LAYER = 1 << 8;
 
-
 	private PlayerAnimationController animCtrl;
 
 	void Start(){
@@ -36,32 +35,27 @@ public class PlayerJumpController : MonoBehaviour {
 
 		this.updateCollisionState();
 
-		if(!isGrounded && wallCollisionDir != 0) {
-			animCtrl.setState(Constants.STATE_ON_WALL);
-		} else if(isGrounded && wallCollisionDir != 0) {
-			animCtrl.setState(Constants.STATE_IDLE);
-		}
-
 		// if the user has pressed down the Jump button this frame
 		if(Input.GetButtonDown("Jump")){
 			if(!isGrounded && wallCollisionDir != 0){
 				if(wallCollisionDir == 1){
 					rb.velocity = new Vector2(-JUMP_SPEED * 2f,JUMP_SPEED);
 					jumpsLeft = 1;
-					animCtrl.setState(Constants.STATE_JUMP);
+					animCtrl.trigger("triggerJump");
 				} else if (wallCollisionDir == -1){
 					rb.velocity = new Vector2(JUMP_SPEED * 2f,JUMP_SPEED);
 					jumpsLeft = 1;
-					animCtrl.setState(Constants.STATE_JUMP);
+					animCtrl.trigger("triggerJump");
 				}
 			} else if(jumpsLeft > 0) {
+				 // force this to not grounded state so that the movement ctrl doesn't instantly re-idle the player during a standing jump
 				if(jumpsLeft == 2 && isGrounded){
-					animCtrl.setState(Constants.STATE_JUMP);
+					animCtrl.trigger("triggerJump");
 					jumpsLeft--;
 					rb.velocity = new Vector2(rb.velocity.x,JUMP_SPEED);
 				} else if (jumpsLeft == 1 && !isGrounded
 				&& Mathf.Abs(rb.velocity.y) < Mathf.Abs(MAX_FALL_SPEED_FOR_DOUBLE_JUMP)){
-					animCtrl.setState(Constants.STATE_DOUBLE_JUMP);
+					animCtrl.trigger("triggerDoubleJump");
 					rb.velocity = new Vector2(rb.velocity.x,DOUBLE_JUMP_SPEED);
 					jumpsLeft--;
 				}
@@ -78,8 +72,14 @@ public class PlayerJumpController : MonoBehaviour {
 		// http://answers.unity3d.com/comments/474489/view.html
 		// if the collision contact point is on the bottom of my player..
 		if(Vector2.Dot(hit,Vector2.up) > 0){
-			animCtrl.setState(Constants.STATE_IDLE);
+			animCtrl.trigger("triggerIdle");
 			jumpsLeft = 2;
+		} else {
+			if(!isGrounded && wallCollisionDir != 0) {
+				animCtrl.trigger("triggerOnWall");
+			} else if(isGrounded && wallCollisionDir != 0) {
+				animCtrl.trigger("triggerIdle");
+			}
 		}
 
 
@@ -87,9 +87,9 @@ public class PlayerJumpController : MonoBehaviour {
 
 	void OnCollisionExit2D(Collision2D c){
 		// if you leave a collision without jumping, and you're falling...
-		if(jumpsLeft == 2 && GetComponent<Rigidbody2D>().velocity.y != 0f){
+		if(jumpsLeft == 2 && !isGrounded){
 			jumpsLeft = 0;
-			animCtrl.setState(Constants.STATE_JUMP);
+			animCtrl.trigger("triggerJump");
 		}
 	}
 
@@ -101,7 +101,7 @@ public class PlayerJumpController : MonoBehaviour {
 		RaycastHit2D downHit = Physics2D.Raycast(
 			new Vector2(rb.position.x, rb.position.y - 0.5f),
 			Vector2.down, 
-			0.1f,
+			0.01f,
 			BLOCK_LAYER);
 		isGrounded = downHit ? true : false;
 		//Debug.Log(isGrounded);
