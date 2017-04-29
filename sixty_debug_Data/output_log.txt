@@ -17,28 +17,16 @@ Platform assembly: F:\Unity\Projects\SixtySeconds\sixty_debug_Data\Managed\Unity
 Loading F:\Unity\Projects\SixtySeconds\sixty_debug_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: F:\Unity\Projects\SixtySeconds\sixty_debug_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading F:\Unity\Projects\SixtySeconds\sixty_debug_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.073 seconds
+- Completed reload, in  0.069 seconds
 Platform assembly: F:\Unity\Projects\SixtySeconds\sixty_debug_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: F:\Unity\Projects\SixtySeconds\sixty_debug_Data\Managed\System.dll (this message is harmless)
-desktop: 3840x2160 60Hz; virtual: 15680x2160 at -3360,0
+desktop: 3840x2160 60Hz; virtual: 13440x2160 at -3360,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.375807 ms
-Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 3.208429 ms
-
-Unloading 99 unused Assets to reduce memory usage. Loaded Objects now: 281.
-Total: 1.394202 ms (FindLiveObjects: 0.030147 ms CreateObjectMapping: 0.016351 ms MarkObjects: 0.162235 ms  DeleteObjects: 1.184190 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.193149 ms
-
-Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 586.
-Total: 0.289979 ms (FindLiveObjects: 0.029381 ms CreateObjectMapping: 0.010730 ms MarkObjects: 0.158914 ms  DeleteObjects: 0.090443 ms)
-
+UnloadTime: 2.963926 ms
 Setting up 4 worker threads for Enlighten.
-  Thread -> id: 4dc -> priority: 1 
-  Thread -> id: 1324 -> priority: 1 
-  Thread -> id: 1328 -> priority: 1 
-  Thread -> id: 132c -> priority: 1 
+  Thread -> id: 460 -> priority: 1 
+  Thread -> id: 17f4 -> priority: 1 
+  Thread -> id: 23a0 -> priority: 1 
+  Thread -> id: 2384 -> priority: 1 
