@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour {
 	private float inAirMoveAdjustmentFactor = 0.5f;
 	private PlayerAnimationController animCtrl;
 
+	private const float DEATH_TO_GAME_OVER_DELAY_IN_SECONDS = 1.5f;
+	private float deathTimer = 0f;
+
 	void Start(){
 		animCtrl = GetComponent<PlayerAnimationController>();
 	}
@@ -58,5 +61,24 @@ public class PlayerController : MonoBehaviour {
 		} else if (rb.velocity.x < 0){
 			transform.localScale = new Vector3(-1f, 1f, 1f);
 		}
-	}	
+	}
+
+	void FixedUpdate(){
+		if(deathTimer > 0f){
+			deathTimer -= Time.deltaTime;
+			if(deathTimer <= 0f){
+				deathTimerExpired();
+			}
+		}
+	}
+
+	public void killPlayer(){
+		// TODO add a player dying animation here, maybe make kill take arguments to set his death animation.
+
+		deathTimer = DEATH_TO_GAME_OVER_DELAY_IN_SECONDS;
+	}
+
+	private void deathTimerExpired(){
+		Application.LoadLevel("game_over");
+	}
 }
