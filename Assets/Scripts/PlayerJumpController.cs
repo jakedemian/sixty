@@ -31,33 +31,35 @@ public class PlayerJumpController : MonoBehaviour {
 	* UPDATE
 	*/
 	void Update () {
-		Rigidbody2D rb = GetComponent<Rigidbody2D>();
+		if(!GetComponent<PlayerController>().isPlayerDead()){
+			Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
-		this.updateCollisionState();
+			this.updateCollisionState();
 
-		// if the user has pressed down the Jump button this frame
-		if(Input.GetButtonDown("Jump")){
-			if(!isGrounded && wallCollisionDir != 0){
-				if(wallCollisionDir == 1){
-					rb.velocity = new Vector2(-JUMP_SPEED * 2f,JUMP_SPEED);
-					jumpsLeft = 1;
-					animCtrl.trigger("triggerJump");
-				} else if (wallCollisionDir == -1){
-					rb.velocity = new Vector2(JUMP_SPEED * 2f,JUMP_SPEED);
-					jumpsLeft = 1;
-					animCtrl.trigger("triggerJump");
-				}
-			} else if(jumpsLeft > 0) {
-				 // force this to not grounded state so that the movement ctrl doesn't instantly re-idle the player during a standing jump
-				if(jumpsLeft == 2 && isGrounded){
-					animCtrl.trigger("triggerJump");
-					jumpsLeft--;
-					rb.velocity = new Vector2(rb.velocity.x,JUMP_SPEED);
-				} else if (jumpsLeft == 1 && !isGrounded
-				&& Mathf.Abs(rb.velocity.y) < Mathf.Abs(MAX_FALL_SPEED_FOR_DOUBLE_JUMP)){
-					animCtrl.trigger("triggerDoubleJump");
-					rb.velocity = new Vector2(rb.velocity.x,DOUBLE_JUMP_SPEED);
-					jumpsLeft--;
+			// if the user has pressed down the Jump button this frame
+			if(Input.GetButtonDown("Jump")){
+				if(!isGrounded && wallCollisionDir != 0){
+					if(wallCollisionDir == 1){
+						rb.velocity = new Vector2(-JUMP_SPEED * 2f,JUMP_SPEED);
+						jumpsLeft = 1;
+						animCtrl.trigger("triggerJump");
+					} else if (wallCollisionDir == -1){
+						rb.velocity = new Vector2(JUMP_SPEED * 2f,JUMP_SPEED);
+						jumpsLeft = 1;
+						animCtrl.trigger("triggerJump");
+					}
+				} else if(jumpsLeft > 0) {
+					 // force this to not grounded state so that the movement ctrl doesn't instantly re-idle the player during a standing jump
+					if(jumpsLeft == 2 && isGrounded){
+						animCtrl.trigger("triggerJump");
+						jumpsLeft--;
+						rb.velocity = new Vector2(rb.velocity.x,JUMP_SPEED);
+					} else if (jumpsLeft == 1 && !isGrounded
+					&& Mathf.Abs(rb.velocity.y) < Mathf.Abs(MAX_FALL_SPEED_FOR_DOUBLE_JUMP)){
+						animCtrl.trigger("triggerDoubleJump");
+						rb.velocity = new Vector2(rb.velocity.x,DOUBLE_JUMP_SPEED);
+						jumpsLeft--;
+					}
 				}
 			}
 		}
