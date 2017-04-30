@@ -35,6 +35,10 @@ public class GameController : MonoBehaviour {
 		if(timer <= 0f){
 			resetPlayer();
 		}
+
+		if(player.GetComponent<PlayerController>().isPlayerDead()){
+			GetComponent<AudioSource>().volume = GetComponent<AudioSource>().volume - 0.01f;
+		}
 	}
 
 	void FixedUpdate(){
@@ -46,9 +50,6 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void resetPlayer(){
-		//player.transform.position = playerStartPosition;
-		//player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-		//timer = TIMER_AMOUNT_IN_SECONDS;
 		Application.LoadLevel("game_over");
 	}
 }

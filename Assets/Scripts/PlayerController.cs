@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
 	private float deathTimer = 0f;
 
 	private bool isDead = false;
+	public AudioClip deathSound;
 
 	void Start(){
 		animCtrl = GetComponent<PlayerAnimationController>();
@@ -85,6 +86,7 @@ public class PlayerController : MonoBehaviour {
 	public void killPlayer(){
 		// TODO add a player dying animation here, maybe make kill take arguments to set his death animation.
 		isDead = true;
+		AudioSource.PlayClipAtPoint(deathSound, transform.position, 2f);
 		animCtrl.trigger("triggerKneesDeath", true);
 		deathTimer = DEATH_TO_GAME_OVER_DELAY_IN_SECONDS;
 	}
